@@ -30,7 +30,6 @@ private:
     taskQueue() = default;
 
     static std::atomic<taskQueue*> t_Q;
-    // static taskQueue* t_Q;
     static std::mutex m_mutex;
 };
 
