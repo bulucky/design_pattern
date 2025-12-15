@@ -1,4 +1,5 @@
 #include <mutex>
+#include <atomic>
 #include <iostream>
 
 class taskQueue {
@@ -7,15 +8,18 @@ public:
     taskQueue& operator=(const taskQueue& t) = delete;
 
     static taskQueue* get_instance() {
-        if (t_Q == nullptr) {
+        taskQueue* task = t_Q.load();
+        if (task == nullptr) {
             m_mutex.lock();
-            if (t_Q == nullptr) {
-                t_Q = new taskQueue;
+            task = t_Q.load();
+            if (task == nullptr) {
+                task = new taskQueue;
+                t_Q.store(task);
             }
             m_mutex.unlock();
         }
 
-        return t_Q;
+        return t_Q.load();
     }
 
     void print() {
@@ -25,11 +29,12 @@ public:
 private:
     taskQueue() = default;
 
-    static taskQueue* t_Q;
+    static std::atomic<taskQueue*> t_Q;
+    // static taskQueue* t_Q;
     static std::mutex m_mutex;
 };
 
-taskQueue* taskQueue::t_Q = nullptr;
+std::atomic<taskQueue*> taskQueue::t_Q;
 std::mutex taskQueue::m_mutex;
 
 int main(int argc, char const* argv[]) {
