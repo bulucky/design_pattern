@@ -3,7 +3,7 @@
 #include <utility>
 
 struct person {
-    person(const std::string& name, const std::string& ability) : name(name), ability(ability) {};
+    person(std::string name, std::string ability) : name(std::move(name)), ability(std::move(ability)) {};
     ~person() {};
     std::string name;
     std::string ability;
@@ -13,7 +13,7 @@ class abstractTeam {
 public:
     abstractTeam(std::string name) : name_(std::move(name)) {};
 
-    ~abstractTeam() {
+    virtual ~abstractTeam() {
         for (const auto& member : team_members_) {
             std::cout << "destory" << member.first << "\n";
             delete member.second;
@@ -46,6 +46,7 @@ protected:
 
 class strawHotTeam : public abstractTeam {
     using abstractTeam::abstractTeam;
+    ~strawHotTeam() = default;
 
     void execute_task() override {
         std::cout << "one piece" << "\n";
@@ -54,6 +55,7 @@ class strawHotTeam : public abstractTeam {
 
 class smokerTeam : public abstractTeam {
     using abstractTeam::abstractTeam;
+    ~smokerTeam() = default;
 
     void execute_task() override {
         std::cout << "catch pirates" << "\n";
@@ -63,6 +65,7 @@ class smokerTeam : public abstractTeam {
 class abstractShip {
 public:
     abstractShip(abstractTeam* team) : team_(team) {};
+    virtual ~abstractShip() {};
 
     void print_ship_info() {
         team_->print_team_info();
@@ -78,6 +81,7 @@ protected:
 
 class merryShip : public abstractShip {
     using abstractShip::abstractShip;
+    ~merryShip() = default;
 
     std::string get_name() override {
         return "merry";
@@ -90,6 +94,7 @@ class merryShip : public abstractShip {
 
 class navyShip : public abstractShip {
     using abstractShip::abstractShip;
+    ~navyShip() = default;
 
     std::string get_name() override {
         return "navy";
@@ -111,6 +116,9 @@ int main(int argc, char const* argv[]) {
 
     abstractShip* merry = new merryShip(team);
     merry->print_ship_info();
+
+    delete team;
+    delete merry;
 
     return 0;
 }
