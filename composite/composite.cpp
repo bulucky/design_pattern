@@ -88,7 +88,7 @@ void game_over(abstractTeam* root) {
     }
 
     if (root && root->has_child()) {
-        managerTeam* team = dynamic_cast<managerTeam*>(root);
+        managerTeam* team = dynamic_cast<managerTeam*>(root);   
         for (const auto& child : team->childs_) {
             game_over(dynamic_cast<abstractTeam*>(child));
         }
