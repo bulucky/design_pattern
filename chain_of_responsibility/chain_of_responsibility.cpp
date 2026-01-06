@@ -112,7 +112,8 @@ int main(int argc, char const* argv[]) {
     boy->request(requestType::qingjia, boss);
     boy->request(requestType::zhangxin, boss);
     boy->request(requestType::chizi, boss);
-
+    if(1) std::cout << "" << "\n";
+    else std::cout << "h" << "\n";
     delete boy;
     delete boss;
     delete ceo;
