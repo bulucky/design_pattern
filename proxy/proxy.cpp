@@ -46,6 +46,7 @@ int main(int argc, char const* argv[]) {
     agent->communicate();
 
     delete agent;
+    
 
     return 0;
 }
