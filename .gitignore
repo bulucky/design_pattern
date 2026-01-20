@@ -2,3 +2,5 @@
 build/
 #zed
 .cache/
+# vscode code counter
+.VSCodeCounter/
